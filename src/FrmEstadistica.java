@@ -67,7 +67,7 @@ public class FrmEstadistica extends JFrame {
 
         txtEstadistica = new JTextField();
         txtEstadistica.setBounds(220, 200, 100, 25);
-        txtEstadistica.setEnabled(false);
+        txtEstadistica.setEditable(false);
         getContentPane().add(txtEstadistica);
 
         // Agregar eventos
@@ -143,12 +143,51 @@ public class FrmEstadistica extends JFrame {
         return suma;
     }
 
+    private double promedio() {
+        return totalDatos > 0 ? sumatoria() / totalDatos : 0;
+    }
+
+    private double desviacionEstandar() {
+        if (totalDatos > 1) {
+            double suma = 0;
+            double promedioActual = promedio();
+            for (int i = 0; i < totalDatos; i++) {
+                suma += Math.abs(muestra[i] - promedioActual);
+            }
+            return suma / (totalDatos - 1);
+        } else {
+            return 0;
+        }
+    }
+
+    private double maximo() {
+        if (totalDatos > 0) {
+            double maximoActual = muestra[0];
+            for (int i = 1; i < totalDatos; i++) {
+                if (muestra[i] > maximoActual) {
+                    maximoActual = muestra[i];
+                }
+            }
+            return maximoActual;
+        } else {
+            return 0;
+        }
+    }
+
     private void calcularEstadistica() {
         switch (cmbEstadistica.getSelectedIndex()) {
             case 0:
                 txtEstadistica.setText(String.valueOf(sumatoria()));
                 break;
-
+            case 1:
+                txtEstadistica.setText(String.valueOf(promedio()));
+                break;
+            case 2:
+                txtEstadistica.setText(String.valueOf(desviacionEstandar()));
+                break;
+            case 3:
+                txtEstadistica.setText(String.valueOf(maximo()));
+                break;
         }
     }
 
